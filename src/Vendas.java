@@ -2,7 +2,7 @@ import java.io.DataInput;
 import java.time.LocalDate;
 import java.util.Date;
 
-public class Vendas {
+public class Vendas  {
     private LocalDate data;
     private String produtoVendido;
     private int quantidadeVendida;
@@ -34,5 +34,7 @@ public class Vendas {
     @Override
     public String toString() {
         return "Venda [Produto: " + produtoVendido + ", Quantidade: " + quantidadeVendida + ", Data da venda: " + data + "]";
+
+     
     }
 }

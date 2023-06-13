@@ -1,6 +1,4 @@
-import java.io.DataInput;
 import java.time.LocalDate;
-import java.util.Date;
 import java.time.format.DateTimeFormatter;
 
 public class Vendas  {

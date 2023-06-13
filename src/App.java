@@ -1,23 +1,15 @@
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.DoubleSummaryStatistics;
-import java.util.IntSummaryStatistics;
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import javax.print.attribute.standard.Media;
 
 public class App {
     public static void main(String[] args) throws InterruptedException, IOException {
-        Scanner in = new Scanner(System.in);
         List<Produto> listaProduto = new ArrayList<>();
         List<Vendas> listaVendas = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
@@ -110,7 +102,7 @@ public class App {
                 for (Produto produto : listaProduto) {
             System.out.println("Digite a quantidade do produto: ");
             int quantidadeVendida = sc.nextInt();
-            
+
             int quantidadeEstoque=produto.getQuantidade()- quantidadeVendida;
             
             produto.setQuantidade(quantidadeEstoque);

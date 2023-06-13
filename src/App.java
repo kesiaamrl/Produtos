@@ -110,6 +110,7 @@ public class App {
                 for (Produto produto : listaProduto) {
             System.out.println("Digite a quantidade do produto: ");
             int quantidadeVendida = sc.nextInt();
+            
             int quantidadeEstoque=produto.getQuantidade()- quantidadeVendida;
             
             produto.setQuantidade(quantidadeEstoque);
@@ -120,7 +121,7 @@ public class App {
             Vendas vendas = new Vendas(data, produtoVendido, quantidadeVendida, produto);
             listaVendas.add(vendas);
             System.out.println("Venda realizada com sucesso! ");
-            
+
             }
         }
         }

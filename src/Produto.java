@@ -4,7 +4,6 @@ public class Produto {
     private double valor;
     private int quantidade;
 
-
     public Produto (String codigo, String nome, double valor, int quantidade){
         this.codigo = codigo;
         this.nome=nome;
@@ -14,7 +13,7 @@ public class Produto {
 
     @Override
     public String toString() {
-        return "Produto [Código: " + codigo + ", Nome: " + nome + ", Valor: " + valor + ", Estoque: " + quantidade + "]";
+        return String.format("Código: %s \nNome: %s \nValor: %.2f \nQuantidade: %d",codigo, nome, valor, quantidade);
     }
 
     public String getCodigo() {

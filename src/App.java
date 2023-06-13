@@ -1,6 +1,8 @@
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -14,14 +16,12 @@ import java.util.stream.Collectors;
 import javax.print.attribute.standard.Media;
 
 public class App {
-    /**
-     * @param args
-     * @throws Exception
-     */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws InterruptedException, IOException {
+        Scanner in = new Scanner(System.in);
         List<Produto> listaProduto = new ArrayList<>();
         List<Vendas> listaVendas = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
+        DateTimeFormatter formato=DateTimeFormatter.ofPattern("dd/MM/yyyy");
         int opcao;
 
         do {
@@ -44,6 +44,7 @@ public class App {
             int quantidade = sc.nextInt();
 
             listaProduto.add(new Produto(codigo, nome, valor, quantidade));
+            
         }
         else if(opcao==2){
             System.out.println("Digite o código do produto a ser consultado: ");
@@ -74,51 +75,52 @@ public class App {
 
         }
         else if (opcao==4){
-            System.out.println("Vendas por período: ");
-            System.out.print("Digite uma data (dd/MM/yyyy): ");
-            String dataFiltro = sc.next();
-    
-            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-            try {
-                Date data = format.parse(dataFiltro);
-                System.out.println("Data digitada: " + format.format(data));
-            } catch (ParseException e) {
-                System.out.println("Data inválida. Certifique-se de usar o formato dd/MM/yyyy.");
-            }
-            List <Vendas> novaListaVendas = listaVendas.stream()
-            .filter(v -> v.getData().equals(dataFiltro)).collect(Collectors.toList());;
-            if(novaListaVendas.isEmpty()){
-                System.out.println("Venda não encontrada!");
-            }
-            else{
-                for (Vendas vendas : novaListaVendas) {
-                    System.out.println(vendas);
+            System.out.println("\nVendas por período: \n");
+            System.out.println("Digite a data inicial: ");
+            LocalDate data1=LocalDate.parse(sc.next(), formato);
+            System.out.println("Digite a data final: ");
+            LocalDate data2=LocalDate.parse(sc.next(), formato);
+            double valorTotal=0.0;
+            double media=0.0;
+
+            for (Vendas vendas : listaVendas) {
+                if(vendas.getData().compareTo(data1) >=0 && vendas.getData().compareTo(data2) < 1){
+                    valorTotal+=vendas.getProduto().getValor() * vendas.getQuantidadeVendida();
+                System.out.println(vendas);
+                System.out.println("\nO valor total das vendas é: " + valorTotal);
+                media+=valorTotal/vendas.getQuantidadeVendida();
+                System.out.println("A média do valor vendido no período é: " + media);
+                } else{
+                    System.out.println("Não foi localizado nenhuma venda neste período!");
                 }
             }
+
         }
                 
         else if (opcao==5){
         
             System.out.println("Digite o código do produto: ");
             String produtoVendido = sc.next();
+            
             List<Produto> listaP= listaProduto.stream()
             .filter(p->p.getCodigo().equals(produtoVendido)).collect(Collectors.toList());
             if (listaP.isEmpty()) {
                 System.out.println("Produto não localizado!");
             } else {
-                for (Produto produto4 : listaProduto) {
+                for (Produto produto : listaProduto) {
             System.out.println("Digite a quantidade do produto: ");
             int quantidadeVendida = sc.nextInt();
-            int quantidadeEstoque=produto4.getQuantidade()- quantidadeVendida;
-            produto4.setQuantidade(quantidadeEstoque);
+            int quantidadeEstoque=produto.getQuantidade()- quantidadeVendida;
+            
+            produto.setQuantidade(quantidadeEstoque);
             if (quantidadeEstoque < 0){
                 System.out.println("Venda não realizada!. Restam apenas " + quantidadeEstoque + " em estoque.");
             }else{          
             LocalDate data = LocalDate.now();
-            Vendas vendas = new Vendas(data, produtoVendido, quantidadeVendida);
+            Vendas vendas = new Vendas(data, produtoVendido, quantidadeVendida, produto);
             listaVendas.add(vendas);
             System.out.println("Venda realizada com sucesso! ");
-            System.out.println(vendas);
+            
             }
         }
         }
